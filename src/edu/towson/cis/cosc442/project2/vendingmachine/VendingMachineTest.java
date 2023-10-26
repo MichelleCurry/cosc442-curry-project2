@@ -51,6 +51,11 @@ public class VendingMachineTest {
 	}
 
 	@Test
+	public void testGetSlotIndex() {
+		assertEquals(3, v.getSlotIndex(VendingMachine.D_CODE));
+	}
+	
+	@Test
 	public void testMakePurchase() {
 		//make sure to add item, money before purchasing then check if item gone after purchasing
 		v.addItem(item, "A");
