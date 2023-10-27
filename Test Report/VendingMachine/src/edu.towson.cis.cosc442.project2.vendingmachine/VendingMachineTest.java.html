@@ -1,0 +1,120 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../../../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../../../jacoco-resources/report.gif" type="image/gif"/><title>VendingMachineTest.java</title><link rel="stylesheet" href="../../../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../../../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../../../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../../../index.html" class="el_report">AllTests (Oct 27, 2023 9:27:55 AM)</a> &gt; <a href="../../index.html" class="el_group">VendingMachine</a> &gt; <a href="../index.html" class="el_bundle">src</a> &gt; <a href="index.source.html" class="el_package">edu.towson.cis.cosc442.project2.vendingmachine</a> &gt; <span class="el_source">VendingMachineTest.java</span></div><h1>VendingMachineTest.java</h1><pre class="source lang-java linenums">package edu.towson.cis.cosc442.project2.vendingmachine;
+
+import static org.junit.Assert.*;
+
+import org.junit.After;
+import org.junit.Before;
+import org.junit.Test;
+
+<span class="fc" id="L9">public class VendingMachineTest {</span>
+	
+	VendingMachine v;
+	VendingMachineItem item;
+
+	@Before
+	public void setUp() throws Exception {
+		//initialize the Vending Machine with Vending Machine Item
+<span class="fc" id="L17">		v = new VendingMachine();</span>
+<span class="fc" id="L18">		item = new VendingMachineItem(&quot;chips&quot;, 1.50);</span>
+<span class="fc" id="L19">	}</span>
+
+	@After
+	public void tearDown() throws Exception {
+<span class="fc" id="L23">	}</span>
+	
+	@Test
+	public void testAddItem() { 
+		//Add item and check if there with getItem
+<span class="fc" id="L28">		v.addItem(item, &quot;A&quot;);</span>
+<span class="fc" id="L29">		assertEquals(item, v.getItem(&quot;A&quot;));</span>
+<span class="fc" id="L30">	}</span>
+	
+	@Test (expected = VendingMachineException.class)
+	public void testAddItemFull() { 
+		//Add item and check if there with getItem
+<span class="fc" id="L35">		VendingMachineItem item2 = new VendingMachineItem(&quot;gummies&quot;, 2);</span>
+<span class="fc" id="L36">		v.addItem(item, &quot;A&quot;);</span>
+<span class="nc" id="L37">		v.addItem(item2, &quot;A&quot;);</span>
+<span class="nc" id="L38">		assertEquals(item, v.getItem(&quot;A&quot;));</span>
+<span class="nc" id="L39">	}</span>
+
+	@Test
+	public void testRemoveItem() {
+		//add item to then remove, check if item null
+<span class="fc" id="L44">		v.addItem(item, &quot;A&quot;);</span>
+<span class="fc" id="L45">		v.removeItem(&quot;A&quot;);</span>
+<span class="fc" id="L46">		assertEquals(null, v.getItem(&quot;A&quot;));</span>
+<span class="fc" id="L47">	}</span>
+	
+	@Test (expected = VendingMachineException.class)
+	public void testRemoveItemEmpty() {
+		//add item to then remove, check if item null
+<span class="nc" id="L52">		v.removeItem(&quot;A&quot;);</span>
+<span class="nc" id="L53">		assertEquals(null, v.getItem(&quot;A&quot;));</span>
+<span class="nc" id="L54">	}</span>
+
+	@Test
+	public void testInsertMoney() {
+		//insert money then check if balance equal to deposit
+<span class="fc" id="L59">		v.insertMoney(1.50);</span>
+<span class="fc" id="L60">		assertEquals(1.50, v.getBalance(), 0.01);</span>
+<span class="fc" id="L61">	}</span>
+	
+	@Test(expected = VendingMachineException.class)	
+	public void testInsertNegativeMoney() {
+		//insert money then check if balance equal to deposit
+<span class="nc" id="L66">		v.insertMoney(-1.50);</span>
+<span class="nc" id="L67">		assertEquals(1.50, v.getBalance(), 0.01);</span>
+<span class="nc" id="L68">	}</span>
+
+	@Test
+	public void testGetBalance() {
+		//don't add anything and check if balance 0 (minimize functions called)
+<span class="fc" id="L73">		assertEquals(0, v.getBalance(), 0.01);</span>
+<span class="fc" id="L74">	}</span>
+
+	@Test
+	public void testGetSlotIndex0() {
+<span class="fc" id="L78">		assertEquals(0, v.getSlotIndex(VendingMachine.A_CODE));</span>
+<span class="fc" id="L79">	}</span>
+	
+	@Test
+	public void testGetSlotIndex1() {
+<span class="fc" id="L83">		assertEquals(1, v.getSlotIndex(VendingMachine.B_CODE));</span>
+<span class="fc" id="L84">	}</span>
+	
+	@Test
+	public void testGetSlotIndex2() {
+<span class="fc" id="L88">		assertEquals(2, v.getSlotIndex(VendingMachine.C_CODE));</span>
+<span class="fc" id="L89">	}</span>
+	
+	@Test
+	public void testGetSlotIndex3() {
+<span class="fc" id="L93">		assertEquals(3, v.getSlotIndex(VendingMachine.D_CODE));</span>
+<span class="fc" id="L94">	}</span>
+	
+	@Test(expected = VendingMachineException.class)
+	public void testGetSlotIndexWithInvalidCode() {
+<span class="nc" id="L98">        v.getSlotIndex(&quot;E&quot;);</span>
+<span class="nc" id="L99">    }</span>
+	
+	@Test
+	public void testMakePurchase() {
+		//make sure to add item, money before purchasing then check if item gone after purchasing
+<span class="fc" id="L104">		v.addItem(item, &quot;A&quot;);</span>
+<span class="fc" id="L105">		v.insertMoney(1.50);</span>
+<span class="fc" id="L106">		v.makePurchase(&quot;A&quot;);</span>
+<span class="fc" id="L107">		assertEquals(null, v.getItem(&quot;A&quot;));</span>
+		
+<span class="fc" id="L109">	}</span>
+
+	@Test
+	public void testReturnChange() {
+		//check if balance 0 after initially inserting money then returning change
+<span class="fc" id="L114">		v.insertMoney(1.50);</span>
+<span class="fc" id="L115">		v.returnChange();</span>
+<span class="fc" id="L116">		assertEquals(0, v.getBalance(), 0.01);</span>
+<span class="fc" id="L117">	}</span>
+
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.10.202304240956</span>AllTests (Oct 27, 2023 9:27:55 AM)</div></body></html>
